@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class CustomErrorConroller implements ErrorController {
+public class CustomErrorController implements ErrorController {
 
   @RequestMapping("/error")
   @ResponseBody
