@@ -13,8 +13,9 @@ public class GreetingControllerTest {
 	private GreetingController controller;
 
 	@Test
-	public void contextLoads() throws Exception {
+	public void greetingTest() throws Exception {
 		assertThat(this.controller.greeting(123, "personal", "big").equals(new Greeting("Hi, userId 123")));
 		assertThat(this.controller.greeting(123, "business", "big").equals(new Greeting("Welcome, business user!")));
+		assertThrows(java.lang.Exception.class, () -> {this.controller.greeting(123, "business", "small");});
 	}
 }
