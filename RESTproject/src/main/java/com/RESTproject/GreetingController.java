@@ -15,7 +15,12 @@ public class GreetingController {
 	public Greeting greeting(@RequestParam(value = "id",required = false) Integer idParam ,
 							@RequestParam(value = "account", required = false) String accountParam,
 							@RequestParam(value = "type", required = false) String typeParam) throws Exception {
-		
-		return new Greeting(resultString);
+	
+	Integer id = idParam;
+	String account = accountParam;
+	String type = typeParam;
+	String resultString = greetingservice.greetingParamsLogic(id, account, type);
+			
+	return new Greeting(resultString);
 	}
 }
