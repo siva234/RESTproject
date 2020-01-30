@@ -20,7 +20,7 @@ public class GreetingService {
 		}
 		else
 		{
-			return  "This path has not yet been implemented.";			
+			throw new Exception("This path has not yet been implemented.");		
 		}
 	}
 }
