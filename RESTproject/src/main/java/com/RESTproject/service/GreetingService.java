@@ -36,7 +36,7 @@ public class GreetingService {
 			return  new ResponseEntity(mappingJacksonValue,HttpStatus.BAD_REQUEST);
 		}
 		log.info("Wrong inputs received Id= %d, Account= %s, Type= %s ", id, account, type);
-		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(new APIException(HttpStatus.INTERNAL_SERVER_ERROR, "Please check if you gave the right inputs"));
-		return  new ResponseEntity(mappingJacksonValue,HttpStatus.INTERNAL_SERVER_ERROR);
+		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(new APIException(HttpStatus.BAD_REQUEST, "Please check if you gave the right inputs"));
+		return  new ResponseEntity(mappingJacksonValue,HttpStatus.BAD_REQUEST);
 	}
 }
