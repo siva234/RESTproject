@@ -1,57 +1,63 @@
 
 package com.RESTproject;
 
+import com.RESTproject.pojo.APIException;
 import com.RESTproject.service.GreetingService;
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.http.HttpStatus;
 
 import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
 public class GreetingServiceTest {
 
-        @Autowired
-        GreetingService greetingService;
+    @Autowired
+    GreetingService greetingService;
 
-        @Test
-        public void greetingStatusTest(){
+    @Test
+    public void verifyGreetingWithId123AndAccountPersonal(){
 
-            assertEquals(greetingService.validateGreetingParams(123, "personal", "big").getStatusCodeValue(),
-                    200);
+        assertEquals(200,
+                greetingService.validateGreetingParams(123, "personal", "big").getStatusCodeValue());
 
-            assertEquals(greetingService.validateGreetingParams(123, "business", "big").getStatusCodeValue(),
-                    200);
+        assertEquals("Hi, userId 123",
+                greetingService.validateGreetingParams(123, "personal", "big").getBody());
 
-            assertEquals(greetingService.validateGreetingParams(123, "business", "small").getStatusCodeValue(),
-                    400);
-
-            assertEquals(greetingService.validateGreetingParams(-1, "personal", "small").getStatusCodeValue(),
-                    500);
-
-        }
-        @Test
-        public void greetingResponseBodyTest() throws JSONException {
-
-            /*JSONAssert.assertEquals(ResponseEntity.ok(new MappingJacksonValue("Hi, userId 123")).getBody().toString(), greetingService.validateGreetingParams((Integer) 123, "personal", "small").getBody().toString(), false);
-
-            JSONAssert.assertEquals(ResponseEntity.ok(new MappingJacksonValue("Welcome, business user!")).getBody().toString(), greetingService.validateGreetingParams(123, "business", "big").getBody().toString(), false);
-
-             assertThat(greetingService.validateGreetingParams(123, "business", "big").getBody(),
-                    ResponseEntity.ok(new MappingJacksonValue("Welcome, business user!")).getBody());
-
-            assertEquals(greetingService.validateGreetingParams(123, "business", "big").getBody()
-                    , (ResponseEntity.ok(new MappingJacksonValue("Welcome, business user!")).getBody()));
-
-            assertEquals(greetingService.validateGreetingParams(123, "business", "small")
-                    , (new ResponseEntity(new MappingJacksonValue(new APIException(HttpStatus.BAD_REQUEST, "This path has not yet been implemented.")),HttpStatus.BAD_REQUEST)));
-
-            assertEquals(greetingService.validateGreetingParams(123, "personal", "small")
-                    , (new ResponseEntity(new MappingJacksonValue(new APIException(HttpStatus.INTERNAL_SERVER_ERROR, "Please check if you gave the right inputs")),HttpStatus.INTERNAL_SERVER_ERROR)));*/
-
-        }
     }
+    @Test
+    public void verifyGreetingWithAccountBusinessAndTypesmall(){
+
+        assertEquals(400,
+                greetingService.validateGreetingParams(123, "business", "small").getStatusCodeValue());
+
+        assertEquals(new APIException(HttpStatus.BAD_REQUEST, "This path has not yet been implemented."),
+                greetingService.validateGreetingParams(123, "business", "small").getBody());
+
+
+    }
+
+    @Test
+    public void verifyGreetingWithAccountbusinessAndTypeBig(){
+
+        assertEquals(200,
+                greetingService.validateGreetingParams(123, "business", "big").getStatusCodeValue());
+
+        assertEquals("Welcome, business user!",
+                greetingService.validateGreetingParams(123, "business", "big").getBody());
+
+    }
+
+    @Test
+    public void verifyGreetingWithIdNullAccountPersonalAndTypeSmall(){
+
+        assertEquals(400,
+                greetingService.validateGreetingParams(null, "personal", "small").getStatusCodeValue());
+
+        assertEquals(new APIException(HttpStatus.BAD_REQUEST, "Please check if you gave the right inputs"),
+                greetingService.validateGreetingParams(null, "personal", "small").getBody());
+
+    }
+
+}
